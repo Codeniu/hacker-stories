@@ -1,6 +1,7 @@
 import InputWithLabel from '@/components/input-with-label';
 import List from '@/screens/list/list';
 import { useSemiPersistent } from '@/utils/use-semi-persistent';
+import axios from 'axios';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 import './App.css';
 
@@ -57,8 +58,8 @@ const App = () => {
 
     const handleFetchStories = useCallback(() => {
         dispatchStories({ type: 'STORIES_FETCH_INIT' });
-        fetch(url)
-            .then(response => response.json())
+        axios(url)
+            .then(response => response.data)
             .then(result => {
                 dispatchStories({
                     type: 'STORIES_FETCH_SUCCESS',
