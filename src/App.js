@@ -1,7 +1,7 @@
 import InputWithLabel from '@/components/input-with-label';
 import List from '@/screens/list/list';
 import { useSemiPersistent } from '@/utils/use-semi-persistent';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import './App.css';
 
 const App = () => {
@@ -25,20 +25,48 @@ const App = () => {
     ];
 
     const [searchTerm, setSearchTerm] = useSemiPersistent('search', 'react');
-    const [stories, setStories] = useState([]);
+    // const [stories, setStories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
+
+    const storiesReducer = (state, action) => {
+        switch (action.type) {
+            case 'SET_STORIES':
+                return action.payload;
+            case 'REMOVE_STORY':
+                return state.filter(
+                    story => action.payload.objectID !== story.objectID
+                );
+            default:
+                throw new Error();
+        }
+    };
+    const [stories, dispatchStories] = useReducer(storiesReducer, []);
 
     useEffect(() => {
         getAsyncStories()
             .then(res => {
-                setStories(res.data.stories);
+                dispatchStories({
+                    type: 'SET_STORIES',
+                    payload: res.data.stories,
+                });
                 setIsLoading(false);
             })
             .catch(err => {
                 setIsError(true);
             });
     });
+
+    const handleRemoveStory = item => {
+        const newStories = stories.filter(
+            story => item.objectID !== story.objectID
+        );
+
+        dispatchStories({
+            type: 'SET_STORIES',
+            payload: newStories,
+        });
+    };
 
     useEffect(() => {
         localStorage.setItem('search', searchTerm);
@@ -74,7 +102,11 @@ const App = () => {
                 <strong>Search</strong>
             </InputWithLabel>
             <br />
-            {isLoading ? <p>Loading...</p> : <List list={searchedStories} />}
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : (
+                <List list={searchedStories} onRemoveItem={handleRemoveStory} />
+            )}
         </div>
     );
 };
