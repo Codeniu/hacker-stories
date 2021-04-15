@@ -56,17 +56,18 @@ const App = () => {
         setUrl(`${API_ENDPOINT}${searchTerm}`);
     };
 
-    const handleFetchStories = useCallback(() => {
+    const handleFetchStories = useCallback(async () => {
         dispatchStories({ type: 'STORIES_FETCH_INIT' });
-        axios(url)
-            .then(response => response.data)
-            .then(result => {
-                dispatchStories({
-                    type: 'STORIES_FETCH_SUCCESS',
-                    payload: result.hits,
-                });
-            })
-            .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' }));
+        try {
+            const result = await axios.get(url);
+
+            dispatchStories({
+                type: 'STORIES_FETCH_SUCCESS',
+                payload: result.data.hits,
+            });
+        } catch {
+            dispatchStories({ type: 'STORIES_FETCH_FAILURE' });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [url]);
 
