@@ -1,6 +1,6 @@
 export const Search = ({ search, onSearch }) => {
     return (
-        <div>
+        <>
             <label htmlFor="search">Search:</label>
             <input
                 id="search"
@@ -8,7 +8,7 @@ export const Search = ({ search, onSearch }) => {
                 onChange={onSearch}
                 value={search}
             ></input>
-        </div>
+        </>
     );
 };
 export default Search;
