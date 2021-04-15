@@ -1,8 +1,8 @@
+import InputWithLabel from '@/components/input-with-label';
+import List from '@/screens/list/list';
+import { useSemiPersistent } from '@/utils/use-semi-persistent';
 import { useEffect } from 'react';
 import './App.css';
-import List from './screens/list/list';
-import Search from './screens/list/search';
-import { useSemiPersistent } from './utils/use-semi-persistent';
 
 const App = () => {
     const stories = [
@@ -26,7 +26,7 @@ const App = () => {
 
     const [searchTerm, setSearchTerm] = useSemiPersistent('search', 'react');
 
-    const onSearch = event => {
+    const handleSearch = event => {
         setSearchTerm(event.target.value);
     };
 
@@ -40,8 +40,13 @@ const App = () => {
     return (
         <div className="App">
             <h1>hello world,{searchTerm}</h1>
-
-            <Search search={searchTerm} onSearch={onSearch} />
+            {/* <Search search={searchTerm} onSearch={onSearch} /> */}
+            <InputWithLabel
+                id="search"
+                label="Search"
+                value={searchTerm}
+                onInputChange={handleSearch}
+            />
             <br />
             <List list={searchedStories} />
         </div>
