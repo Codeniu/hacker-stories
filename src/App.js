@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./App.css";
-import List from "./list/list";
-import Search from "./list/search";
+import List from "./screens/list/list";
+import Search from "./screens/list/search";
 import { useSemiPersistent } from "./utils/use-semi-persistent";
 
 const App = () => {
