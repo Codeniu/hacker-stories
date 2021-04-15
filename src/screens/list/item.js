@@ -1,11 +1,9 @@
 const Item = ({ item, onRemoveItem }) => (
     <div>
-        <span>
+        <span style={{ fontSize: '2rem' }}>
             <a href={item.url}>{item.title}</a>
         </span>
-        <span>{item.author}</span>
-        <span>{item.num_comments}</span>
-        <span>{item.points}</span>
+        &nbsp;&nbsp;
         <span>
             <button
                 type="button"
@@ -13,9 +11,18 @@ const Item = ({ item, onRemoveItem }) => (
                     onRemoveItem(item);
                 }}
             >
-                Dismiss
+                Dissmis
             </button>
         </span>
+        <br />
+        <strong>author:&nbsp;</strong>
+        <span>{item.author}</span>
+        <strong>num_comments:&nbsp;</strong>
+        <span>{item.num_comments}</span>
+        <strong>points:&nbsp;</strong>
+        <span>{item.points}</span>
+        <br />
+        <br />
     </div>
 );
 
