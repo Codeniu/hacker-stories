@@ -44,6 +44,7 @@ const App = () => {
             <InputWithLabel
                 id="search"
                 label="Search"
+                isFocused
                 value={searchTerm}
                 onInputChange={handleSearch}
             >
