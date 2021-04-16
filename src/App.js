@@ -3,7 +3,7 @@ import PressedBtn from '@/components/pressed-button';
 import List from '@/screens/list/list';
 import { useSemiPersistent } from '@/utils/use-semi-persistent';
 import axios from 'axios';
-import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
 
@@ -91,25 +91,47 @@ const App = () => {
             story.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    return (
-        <StyledContainer>
-            <StyledHeadlinePrimary>My Hacker Stories</StyledHeadlinePrimary>
-            {stories.isError && (
-                <p style={{ color: 'red' }}>Something is error!!!</p>
-            )}
+    // header style controller
+    const [isScrolled, setIsScrolled] = useState(false);
+    const mainContainer = useRef();
 
-            <SearchForm
-                handleSearchSubmit={handleSearchSubmit}
-                searchTerm={searchTerm}
-                handleSearchInput={handleSearchInput}
-            />
-            <br />
-            {stories.isLoading ? (
-                <p>Loading...</p>
-            ) : (
-                <List list={searchedStories} onRemoveItem={handleRemoveStory} />
-            )}
-        </StyledContainer>
+    document.addEventListener('scroll', () => {
+        if (mainContainer.current) {
+            const elemTop = mainContainer.current.getBoundingClientRect().top;
+            console.log(elemTop);
+            if (elemTop < 100) {
+                setIsScrolled(true);
+            } else if (elemTop > 100 && isScrolled) {
+                setIsScrolled(false);
+            }
+        }
+    });
+    return (
+        <>
+            <StyledHeadlinePrimary active={isScrolled}>
+                My Hacker Stories
+            </StyledHeadlinePrimary>
+            <StyledContainer ref={mainContainer}>
+                {stories.isError && (
+                    <p style={{ color: 'red' }}>Something is error!!!</p>
+                )}
+
+                <SearchForm
+                    handleSearchSubmit={handleSearchSubmit}
+                    searchTerm={searchTerm}
+                    handleSearchInput={handleSearchInput}
+                />
+                <br />
+                {stories.isLoading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <List
+                        list={searchedStories}
+                        onRemoveItem={handleRemoveStory}
+                    />
+                )}
+            </StyledContainer>
+        </>
     );
 };
 
@@ -146,10 +168,23 @@ const StyledContainer = styled.div`
     font-size: 1.6rem;
 `;
 
-const StyledHeadlinePrimary = styled.h1`
+const StyledHeadlinePrimary = styled.div`
+    padding: 2rem;
+    z-index: 99;
+
+    width: 100%;
+    height: 8rem;
     font-size: 4.8rem;
     font-weight: 300;
     letter-spacing: 0.2rem;
+    border-bottom: ${props => (props.active ? '0.2' : '0') + 'rem solid #fff'};
+
+    position: sticky;
+    top: 0;
+    background: #83a4d4;
+    background: linear-gradient(to left, #ffd5b6, #3497c7);
+
+    /* clip-path: polygon(0 0, 100% 0, 100% 5vh, 0 100%);  */
 `;
 const StyledSearchForm = styled.form`
     padding: 10px 0 20px 0;
