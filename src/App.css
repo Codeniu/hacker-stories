@@ -12,12 +12,8 @@ html body #root .App {
     min-height: 100vh;
 }
 
-.project-list{
-    font-size: 1.6rem;
-}
 
-.headlinePrimary {
-    font-size: 4.8rem;
-    font-weight: 300;
-    letter-spacing: 0.2rem;
+.button:hover>svg>g {
+    fill: #ffffff;
+    stroke: #ffffff;
 }

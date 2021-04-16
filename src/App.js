@@ -1,8 +1,11 @@
 import InputWithLabel from '@/components/input-with-label';
+// import PressedBtn from '@/components/pressed-button';
 import List from '@/screens/list/list';
+import { ReactComponents as Check } from '@/svgs/check.svg';
 import { useSemiPersistent } from '@/utils/use-semi-persistent';
 import axios from 'axios';
 import { useCallback, useEffect, useReducer, useState } from 'react';
+import styled from 'styled-components';
 import './App.css';
 
 const App = () => {
@@ -90,8 +93,8 @@ const App = () => {
     );
 
     return (
-        <div className="project-list">
-            <h1 className="headlinePrimary">My Hacker Stories</h1>
+        <StyledContainer>
+            <StyledHeadlinePrimary>My Hacker Stories</StyledHeadlinePrimary>
             {stories.isError && (
                 <p style={{ color: 'red' }}>Something is error!!!</p>
             )}
@@ -107,7 +110,7 @@ const App = () => {
             ) : (
                 <List list={searchedStories} onRemoveItem={handleRemoveStory} />
             )}
-        </div>
+        </StyledContainer>
     );
 };
 
@@ -115,7 +118,7 @@ export default App;
 
 const SearchForm = ({ handleSearchSubmit, searchTerm, handleSearchInput }) => {
     return (
-        <form onSubmit={handleSearchSubmit}>
+        <StyledSearchForm onSubmit={handleSearchSubmit}>
             <InputWithLabel
                 id="search"
                 label="Search"
@@ -125,9 +128,52 @@ const SearchForm = ({ handleSearchSubmit, searchTerm, handleSearchInput }) => {
             >
                 <strong>Search</strong>
             </InputWithLabel>
-            <button type="submit" disabled={!searchTerm}>
-                Submit
-            </button>
-        </form>
+            <StyledButtonLarge type="submit" disabled={!searchTerm}>
+                <Check width="18px" height="18px" />
+            </StyledButtonLarge>
+            {/* <PressedBtn /> */}
+        </StyledSearchForm>
     );
 };
+
+const StyledContainer = styled.div`
+    height: 100vw;
+    padding: 20px;
+
+    background: #83a4d4;
+    background: linear-gradient(to left, #b6fbff, #83a4d4);
+
+    color: #171212;
+    font-size: 1.6rem;
+`;
+
+const StyledHeadlinePrimary = styled.h1`
+    font-size: 4.8rem;
+    font-weight: 300;
+    letter-spacing: 0.2rem;
+`;
+const StyledSearchForm = styled.form`
+    padding: 10px 0 20px 0;
+    display: flex;
+    align-items: baseline;
+`;
+
+const StyledButton = styled.button`
+    background: transparent;
+    border: 1px solid #607d8b;
+    padding: 5px;
+    cursor: pointer;
+
+    outline-width: inherit;
+
+    transition: all 0.1s ease-in;
+
+    &:hover {
+        background: #ff5722;
+        color: #fff;
+    }
+`;
+
+const StyledButtonLarge = styled(StyledButton)`
+    padding: 10px;
+`;
