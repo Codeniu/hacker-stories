@@ -208,6 +208,6 @@ const StyledButton = styled.button`
     }
 `;
 
-const StyledButtonLarge = styled(StyledButton)`
-    padding: 10px;
-`;
+// const StyledButtonLarge = styled(StyledButton)`
+//     padding: 10px;
+// `;
