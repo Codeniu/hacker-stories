@@ -52,8 +52,9 @@ const App = () => {
         setSearchTerm(event.target.value);
     };
 
-    const handleSearchSubmit = () => {
+    const handleSearchSubmit = event => {
         setUrl(`${API_ENDPOINT}${searchTerm}`);
+        event.preventDefault();
     };
 
     const handleFetchStories = useCallback(async () => {
@@ -90,26 +91,16 @@ const App = () => {
 
     return (
         <div className="project-list">
+            <h1 className="headlinePrimary">My Hacker Stories</h1>
             {stories.isError && (
                 <p style={{ color: 'red' }}>Something is error!!!</p>
             )}
-            {/* <Search search={searchTerm} onSearch={onSearch} /> */}
-            <InputWithLabel
-                id="search"
-                label="Search"
-                isFocused
-                value={searchTerm}
-                onInputChange={handleSearchInput}
-            >
-                <strong>Search</strong>
-            </InputWithLabel>
-            <button
-                type="button"
-                disabled={!searchTerm}
-                onClick={handleSearchSubmit}
-            >
-                Submit
-            </button>
+
+            <SearchForm
+                handleSearchSubmit={handleSearchSubmit}
+                searchTerm={searchTerm}
+                handleSearchInput={handleSearchInput}
+            />
             <br />
             {stories.isLoading ? (
                 <p>Loading...</p>
@@ -121,3 +112,22 @@ const App = () => {
 };
 
 export default App;
+
+const SearchForm = ({ handleSearchSubmit, searchTerm, handleSearchInput }) => {
+    return (
+        <form onSubmit={handleSearchSubmit}>
+            <InputWithLabel
+                id="search"
+                label="Search"
+                isFocused
+                value={searchTerm}
+                onInputChange={handleSearchInput}
+            >
+                <strong>Search</strong>
+            </InputWithLabel>
+            <button type="submit" disabled={!searchTerm}>
+                Submit
+            </button>
+        </form>
+    );
+};

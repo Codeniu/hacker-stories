@@ -15,3 +15,9 @@ html body #root .App {
 .project-list{
     font-size: 1.6rem;
 }
+
+.headlinePrimary {
+    font-size: 4.8rem;
+    font-weight: 300;
+    letter-spacing: 0.2rem;
+}

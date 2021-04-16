@@ -1,3 +1,5 @@
+import '@/styles/Button.moudle.css';
+
 const Item = ({ item, onRemoveItem }) => (
     <div>
         <span style={{ fontSize: '2rem' }}>
@@ -6,6 +8,7 @@ const Item = ({ item, onRemoveItem }) => (
         &nbsp;&nbsp;
         <span>
             <button
+                className="button"
                 type="button"
                 onClick={() => {
                     onRemoveItem(item);
