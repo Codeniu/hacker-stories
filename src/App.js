@@ -1,7 +1,6 @@
 import InputWithLabel from '@/components/input-with-label';
-// import PressedBtn from '@/components/pressed-button';
+import PressedBtn from '@/components/pressed-button';
 import List from '@/screens/list/list';
-import { ReactComponents as Check } from '@/svgs/check.svg';
 import { useSemiPersistent } from '@/utils/use-semi-persistent';
 import axios from 'axios';
 import { useCallback, useEffect, useReducer, useState } from 'react';
@@ -128,10 +127,10 @@ const SearchForm = ({ handleSearchSubmit, searchTerm, handleSearchInput }) => {
             >
                 <strong>Search</strong>
             </InputWithLabel>
-            <StyledButtonLarge type="submit" disabled={!searchTerm}>
+            {/* <StyledButtonLarge type="submit" disabled={!searchTerm}>
                 <Check width="18px" height="18px" />
-            </StyledButtonLarge>
-            {/* <PressedBtn /> */}
+            </StyledButtonLarge> */}
+            <PressedBtn handleSearchSubmit={handleSearchSubmit} />
         </StyledSearchForm>
     );
 };
