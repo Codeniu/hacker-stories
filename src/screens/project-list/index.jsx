@@ -2,13 +2,14 @@ import { useSemiPersistent } from '@/utils/use-semi-persistent';
 import axios from 'axios';
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import styled from 'styled-components';
+import LastSearches from './last-searches';
 import List from './list';
 import SearchForm from './search-form';
 
 const ProjectList = () => {
     const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
     const [searchTerm, setSearchTerm] = useSemiPersistent('search', 'react');
-    const [url, setUrl] = useState(`${API_ENDPOINT}${searchTerm}`);
+    const [urls, setUrls] = useState([`${API_ENDPOINT}${searchTerm}`]);
 
     const storiesReducer = (state, action) => {
         switch (action.type) {
@@ -53,14 +54,47 @@ const ProjectList = () => {
     };
 
     const handleSearchSubmit = event => {
-        setUrl(`${API_ENDPOINT}${searchTerm}`);
+        handleSearch(searchTerm);
         event.preventDefault();
     };
+
+    // search history
+    const extractSearchTerm = url => url.replace(API_ENDPOINT, '');
+    const getLastSearches = urls =>
+        urls
+            .reduce((result, url, index) => {
+                const searchTerm = extractSearchTerm(url);
+
+                if (index === 0) {
+                    return result.concat(searchTerm);
+                }
+
+                const previousSearchTerm = result[result.length - 1];
+
+                if (searchTerm === previousSearchTerm) {
+                    return result;
+                } else {
+                    return result.concat(searchTerm);
+                }
+            }, [])
+            .slice(-6)
+            .slice(0, -1);
+
+    const handleLastSearch = searchTerm => {
+        setSearchTerm(searchTerm);
+        handleSearch(searchTerm);
+    };
+    const handleSearch = searchTerm => {
+        const url = `${API_ENDPOINT}${searchTerm}`;
+        setUrls(urls.concat(url));
+    };
+    const lastSearches = getLastSearches(urls);
 
     const handleFetchStories = useCallback(async () => {
         dispatchStories({ type: 'STORIES_FETCH_INIT' });
         try {
-            const result = await axios.get(url);
+            const lastUrl = urls[urls.length - 1];
+            const result = await axios.get(lastUrl);
 
             dispatchStories({
                 type: 'STORIES_FETCH_SUCCESS',
@@ -70,7 +104,7 @@ const ProjectList = () => {
             dispatchStories({ type: 'STORIES_FETCH_FAILURE' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [url]);
+    }, [urls]);
 
     useEffect(() => {
         handleFetchStories();
@@ -120,6 +154,22 @@ const ProjectList = () => {
                     handleSearchInput={handleSearchInput}
                 />
                 <br />
+
+                {/* {lastSearches.map(searchTerm => (
+                    <button
+                        key={searchTerm}
+                        type="button"
+                        onClick={() => handleLastSearch(searchTerm)}
+                    >
+                        {searchTerm}
+                    </button>
+                ))} */}
+                <LastSearches
+                    lastSearches={lastSearches}
+                    handleLastSearch={handleLastSearch}
+                />
+                <br />
+
                 {stories.isLoading ? (
                     <p>Loading...</p>
                 ) : (
@@ -158,11 +208,6 @@ const StyledHeadlinePrimary = styled.div`
     top: 0;
     background: #83a4d4;
     background: linear-gradient(to left, #b6fbff, #83a4d4);
-
-    /* clip-path: polygon(0 0, 100% 0, 100% 5vh, 0 100%);  */
 `;
-// const StyledButtonLarge = styled(StyledButton)`
-//     padding: 10px;
-// `;
 
 export default ProjectList;
