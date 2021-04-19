@@ -7,9 +7,18 @@ import List from './list';
 import SearchForm from './search-form';
 
 const ProjectList = () => {
-    const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
     const [searchTerm, setSearchTerm] = useSemiPersistent('search', 'react');
-    const [urls, setUrls] = useState([`${API_ENDPOINT}${searchTerm}`]);
+
+    const API_BASE = 'https://hn.algolia.com/api/v1';
+    const API_SEARCH = '/search';
+    const PARAM_SEARCH = 'query=';
+    const PARAM_PAGE = 'page=';
+    const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
+
+    const getUrl = (searchTerm, page) =>
+        `${API_BASE}${API_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`;
+
+    const [urls, setUrls] = useState([getUrl(searchTerm, 0)]);
 
     const storiesReducer = (state, action) => {
         switch (action.type) {
@@ -24,7 +33,11 @@ const ProjectList = () => {
                     ...state,
                     isLoading: false,
                     isError: false,
-                    data: action.payload,
+                    data:
+                        action.payload.page === 0
+                            ? action.payload.list
+                            : state.data.concat(action.payload.list),
+                    page: action.payload.page,
                 };
             case 'STORIES_FETCH_FAILURE':
                 return {
@@ -45,6 +58,7 @@ const ProjectList = () => {
     };
     const [stories, dispatchStories] = useReducer(storiesReducer, {
         data: [],
+        page: 0,
         isLoading: false,
         isError: false,
     });
@@ -54,12 +68,15 @@ const ProjectList = () => {
     };
 
     const handleSearchSubmit = event => {
-        handleSearch(searchTerm);
+        handleSearch(searchTerm, 0);
         event.preventDefault();
     };
 
     // search history
-    const extractSearchTerm = url => url.replace(API_ENDPOINT, '');
+    const extractSearchTerm = url =>
+        url
+            .substring(url.lastIndexOf('?') + 1, url.lastIndexOf('&'))
+            .replace(PARAM_SEARCH, '');
     const getLastSearches = urls =>
         urls
             .reduce((result, url, index) => {
@@ -82,10 +99,10 @@ const ProjectList = () => {
 
     const handleLastSearch = searchTerm => {
         setSearchTerm(searchTerm);
-        handleSearch(searchTerm);
+        handleSearch(searchTerm, 0);
     };
-    const handleSearch = searchTerm => {
-        const url = `${API_ENDPOINT}${searchTerm}`;
+    const handleSearch = (searchTerm, page) => {
+        const url = getUrl(searchTerm, page);
         setUrls(urls.concat(url));
     };
     const lastSearches = getLastSearches(urls);
@@ -98,7 +115,10 @@ const ProjectList = () => {
 
             dispatchStories({
                 type: 'STORIES_FETCH_SUCCESS',
-                payload: result.data.hits,
+                payload: {
+                    list: result.data.hits,
+                    page: result.data.page,
+                },
             });
         } catch {
             dispatchStories({ type: 'STORIES_FETCH_FAILURE' });
@@ -138,6 +158,12 @@ const ProjectList = () => {
         }
     });
 
+    const handleMore = () => {
+        const lastUrl = urls[urls.length - 1];
+        const searchTerm = extractSearchTerm(lastUrl);
+        handleSearch(searchTerm, stories.page + 1);
+    };
+
     return (
         <>
             <StyledHeadlinePrimary active={isScrolled}>
@@ -161,14 +187,13 @@ const ProjectList = () => {
                     handleLastSearch={handleLastSearch}
                 />
                 <br />
-
+                <List list={searchedStories} onRemoveItem={handleRemoveStory} />
                 {stories.isLoading ? (
                     <p>Loading...</p>
                 ) : (
-                    <List
-                        list={searchedStories}
-                        onRemoveItem={handleRemoveStory}
-                    />
+                    <button type="button" onClick={handleMore}>
+                        More
+                    </button>
                 )}
             </StyledContainer>
         </>
@@ -176,7 +201,7 @@ const ProjectList = () => {
 };
 
 const StyledContainer = styled.div`
-    height: 100vw;
+    min-height: 100vw;
     padding: 20px;
 
     background: #83a4d4;
