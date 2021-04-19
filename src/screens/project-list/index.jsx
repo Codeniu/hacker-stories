@@ -143,6 +143,7 @@ const ProjectList = () => {
             <StyledHeadlinePrimary active={isScrolled}>
                 My Hacker Stories
             </StyledHeadlinePrimary>
+
             <StyledContainer ref={mainContainer}>
                 {stories.isError && (
                     <p style={{ color: 'red' }}>Something is error!!!</p>
@@ -153,17 +154,8 @@ const ProjectList = () => {
                     searchTerm={searchTerm}
                     handleSearchInput={handleSearchInput}
                 />
-                <br />
 
-                {/* {lastSearches.map(searchTerm => (
-                    <button
-                        key={searchTerm}
-                        type="button"
-                        onClick={() => handleLastSearch(searchTerm)}
-                    >
-                        {searchTerm}
-                    </button>
-                ))} */}
+                <br />
                 <LastSearches
                     lastSearches={lastSearches}
                     handleLastSearch={handleLastSearch}
@@ -202,12 +194,11 @@ const StyledHeadlinePrimary = styled.div`
     font-size: 4.8rem;
     font-weight: 300;
     letter-spacing: 0.2rem;
-    border-bottom: ${props => (props.active ? '0.2' : '0') + 'rem solid #fff'};
-
     position: sticky;
     top: 0;
     background: #83a4d4;
     background: linear-gradient(to left, #b6fbff, #83a4d4);
+    box-shadow: ${props => (props.active ? ' 0 5px 20px -10px #000' : '')};
 `;
 
 export default ProjectList;
