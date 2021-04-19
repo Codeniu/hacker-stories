@@ -1,4 +1,4 @@
-# My hacker styories
+# My hacker stories
 一个react练手项目
 
 参照 [the-road-to-learn-react](https://leanpub.com/the-road-to-learn-react-chinese/read_full) 这本react基础教程构建而成，部署在 Github Page 上。
