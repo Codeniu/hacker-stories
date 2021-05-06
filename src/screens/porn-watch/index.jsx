@@ -187,7 +187,7 @@ const Test = () => {
                             alt=""
                         />
                     </PointSecond>
-                    <DayWrapper>{new Date().getDay()}</DayWrapper>
+                    <DayWrapper>{new Date().getDate()}</DayWrapper>
                 </Tich>
             </TichWrapper>
         </>
