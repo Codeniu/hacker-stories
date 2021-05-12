@@ -1,8 +1,9 @@
-import PornWatch from '@/screens/porn-watch/index';
+import { PornWatch } from '@/screens/porn-watch/index';
 import ProjectListScreen from '@/screens/project-list/index';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
+import { ReactComponent as Github } from '@/svgs/github.svg';
 
 const StyledButton = styled.button`
     background: transparent;
@@ -22,10 +23,21 @@ const ChangeButton = styled(StyledButton)`
 `;
 
 const ButtonWrapper = styled.div`
+    background-color: #999;
+    height: 28px;
     button {
         margin-right: 10px;
     }
 `;
+
+const GithubBtn = styled.div`
+    float: right;
+    margin-right: 4rem;
+    height: 100%;
+    display: grid;
+    place-items: center;
+`;
+
 const App = () => {
     const [pageName, setPageName] = useState('clock');
     return (
@@ -45,6 +57,11 @@ const App = () => {
                 >
                     Clock
                 </ChangeButton>
+                <GithubBtn>
+                    <a href="https://github.com/Codeniu/hacker-stories">
+                        <Github width="21px" height="21px" />
+                    </a>
+                </GithubBtn>
             </ButtonWrapper>
             {pageName === 'clock' ? <PornWatch /> : <ProjectListScreen />}
         </>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 const TichWrapper = styled.div`
-    height: 100vh;
+    min-height: 150rem;
+    min-width: 70rem;
     background-color: cornsilk;
     display: grid;
     place-items: center;
@@ -132,7 +133,7 @@ const DayWrapper = styled.div`
     text-align: center;
 `;
 
-const Test = () => {
+export const PornWatch = () => {
     const [secAngle, setSecAngle] = useState(0);
     const [minAngle, setminAngle] = useState(0);
     const [hourAngle, sethourAngle] = useState(0);
@@ -193,4 +194,3 @@ const Test = () => {
         </>
     );
 };
-export default Test;
