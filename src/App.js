@@ -1,5 +1,6 @@
 import { PornWatch } from '@/screens/porn-watch/index';
 import ProjectListScreen from '@/screens/project-list/index';
+import { MinioScreen } from '@/screens/minioScreen';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
@@ -39,7 +40,7 @@ const GithubBtn = styled.div`
 `;
 
 const App = () => {
-    const [pageName, setPageName] = useState('clock');
+    const [pageName, setPageName] = useState('list');
     return (
         <>
             <ButtonWrapper>
@@ -57,13 +58,23 @@ const App = () => {
                 >
                     Clock
                 </ChangeButton>
+                <ChangeButton
+                    onClick={() => {
+                        setPageName('minio');
+                    }}
+                >
+                    Minio
+                </ChangeButton>
                 <GithubBtn>
                     <a href="https://github.com/Codeniu/hacker-stories">
                         <Github width="21px" height="21px" />
                     </a>
                 </GithubBtn>
             </ButtonWrapper>
-            {pageName === 'clock' ? <PornWatch /> : <ProjectListScreen />}
+
+            {pageName === 'clock' ? <PornWatch /> : ''}
+            {pageName === 'list' ? <ProjectListScreen /> : ''}
+            {pageName === 'minio' ? <MinioScreen /> : ''}
         </>
     );
 };

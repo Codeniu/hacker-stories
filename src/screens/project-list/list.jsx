@@ -155,6 +155,6 @@ const StyledButton = styled.button`
     }
 `;
 
-const StyledButtonSmall = styled(StyledButton)`
+export const StyledButtonSmall = styled(StyledButton)`
     padding: 5px;
 `;
