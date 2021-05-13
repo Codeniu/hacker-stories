@@ -26,6 +26,7 @@ export const MinioScreen = () => {
         });
 
         showDetial({ name: bucketName });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const showDetial = item => {
