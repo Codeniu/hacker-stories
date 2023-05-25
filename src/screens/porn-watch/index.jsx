@@ -165,26 +165,26 @@ export const PornWatch = () => {
         <>
             <TichWrapper>
                 <WatchWrapper
-                    src="https://gitee.com/youngniu/pic-bed/raw/master/img/xxoo.png"
+                    src="https://codeniu-picbed.oss-cn-hangzhou.aliyuncs.com/picbed/20230525170948.png"
                     alt=""
                     width="700px"
                 />
                 <Tich>
                     <PointHour rotate={hourAngle}>
                         <img
-                            src="https://gitee.com/youngniu/pic-bed/raw/master/img/zhizhen.png"
+                            src="https://codeniu-picbed.oss-cn-hangzhou.aliyuncs.com/picbed/20230525170947.png"
                             alt=""
                         />
                     </PointHour>
                     <PointMinute rotate={minAngle}>
                         <img
-                            src="https://gitee.com/youngniu/pic-bed/raw/master/img/zhizhen.png"
+                            src="https://codeniu-picbed.oss-cn-hangzhou.aliyuncs.com/picbed/20230525170947.png"
                             alt=""
                         />
                     </PointMinute>
                     <PointSecond rotate={secAngle}>
                         <img
-                            src="https://gitee.com/youngniu/pic-bed/raw/master/img/kedou.png"
+                            src="https://codeniu-picbed.oss-cn-hangzhou.aliyuncs.com/picbed/20230525171053.png"
                             alt=""
                         />
                     </PointSecond>
