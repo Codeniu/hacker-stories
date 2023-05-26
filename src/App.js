@@ -1,6 +1,6 @@
 import { PornWatch } from '@/screens/porn-watch/index';
 import ProjectListScreen from '@/screens/project-list/index';
-import { MinioScreen } from '@/screens/minioScreen';
+// import { MinioScreen } from '@/screens/minioScreen';
 import { useState } from 'react';
 import styled from 'styled-components';
 import './App.css';
@@ -74,7 +74,7 @@ const App = () => {
 
             {pageName === 'clock' ? <PornWatch /> : ''}
             {pageName === 'list' ? <ProjectListScreen /> : ''}
-            {pageName === 'minio' ? <MinioScreen /> : ''}
+            {/* {pageName === 'minio' ? <MinioScreen /> : ''} */}
         </>
     );
 };
